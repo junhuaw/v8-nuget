@@ -142,12 +142,9 @@ for arch in PLATFORMS:
 		### Generate build.ninja files in out.gn/toolset/arch/conf directory
 		out_dir = os.path.join(toolset, arch, conf)
 		builder = ('ia32' if arch == 'x86' else arch) + '.' + conf.lower()
-		cmd = 'tools/dev/v8gen.py -b ' + builder + ' ' + out_dir +  ' -vv -- is_clang=' + is_clang + ' is_component_build=true treat_warnings_as_errors=false'
-
-		print 'CMD: ', cmd, 'cwd: v8'
-		
 		subprocess.check_call([sys.executable, 'tools/dev/v8gen.py',
-			'-b', builder, out_dir, '-vv', '--', 'is_clang='+is_clang, 'is_component_build=true', 'treat_warnings_as_errors=false'], cwd='v8', env=env)
+			'-b', builder, out_dir, '-vv', '--', 'is_clang='+is_clang, 'is_component_build=true', 'treat_warnings_as_errors=false', 
+			'v8_use_multi_snapshots=true'], cwd='v8', env=env)
 		### Build V8 with ninja from the generated files
 		out_dir = os.path.join('out.gn', out_dir)
 		subprocess.check_call([NINJA, '-C', out_dir, 'v8'], cwd='v8', env=env)
