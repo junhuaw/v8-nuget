@@ -132,6 +132,9 @@ print 'C++ Toolset', toolset
 # Copy GN to the V8 buildtools in order to work v8gen script
 shutil.copy(GN, 'v8/buildtools/win')
 
+# Generate LASTCHANGE file
+subprocess.check_call([sys.executable, 'lastchange.py', '-o', 'LASTCHANGE'], cwd='v8/build/util', env=env)
+
 ## Build V8
 for arch in PLATFORMS:
 #	if 'CLANG_TOOLSET' in env:
