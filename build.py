@@ -118,12 +118,11 @@ if XP_TOOLSET:
 if toolset.startswith('v141'):
 	is_clang = 'false'
 else:
-	subprocess.check_call([sys.executable, 'tools/clang/scripts/update.py'], cwd='v8', env=env)
 	# v8/build/vs_toolchain.py _CopyPGORuntime() supports only default version Visual Studio 2017
 	del env['GYP_MSVS_VERSION']
 	del env['GYP_MSVS_OVERRIDE_PATH']
 	is_clang = 'true'
-
+	subprocess.check_call([sys.executable, 'tools/clang/scripts/update.py'], cwd='v8', env=env)
 
 print 'V8 version', version
 print 'Visual Studio', vs_version, 'in', vs_install_dir
@@ -133,7 +132,9 @@ print 'C++ Toolset', toolset
 shutil.copy(GN, 'v8/buildtools/win')
 
 # Generate LASTCHANGE file
-subprocess.check_call([sys.executable, 'lastchange.py', '-o', 'LASTCHANGE'], cwd='v8/build/util', env=env)
+# similiar to `lastchange` hook from DEPS
+if os.path.isfile('v8/build/util/lastchange.py'):
+	subprocess.check_call([sys.executable, 'lastchange.py', '-o', 'LASTCHANGE'], cwd='v8/build/util', env=env)
 
 ## Build V8
 for arch in PLATFORMS:
