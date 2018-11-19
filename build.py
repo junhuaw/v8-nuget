@@ -7,6 +7,7 @@ import string
 import sys
 import subprocess
 import shutil
+import datetime
 
 V8_URL = 'https://chromium.googlesource.com/v8/v8.git'
 V8_VERSION = sys.argv[1] if len(sys.argv) > 1 else os.environ.get('V8_VERSION', '')
@@ -67,6 +68,8 @@ def copytree(src_dir, dest_dir):
 
 
 # __main__
+
+print "//////", datetime.datetime.now() , "started building"
 
 ## Fetch V8 sources
 git_fetch(V8_URL+'@'+V8_VERSION, 'v8')
@@ -143,6 +146,7 @@ for arch in PLATFORMS:
 
 	for conf in CONFIGURATIONS:
 		### Generate build.ninja files in out.gn/toolset/arch/conf directory
+		print "//////", datetime.datetime.now() , "building", arch, conf
 		out_dir = os.path.join(toolset, arch, conf)
 		builder = ('ia32' if arch == 'x86' else arch) + '.' + conf.lower()
 		subprocess.check_call([sys.executable, 'tools/dev/v8gen.py',
@@ -177,3 +181,5 @@ for arch in PLATFORMS:
 		subprocess.check_call(['nuget', 'pack', nuspec] + nuget_args, cwd='nuget')
 
 		os.remove('nuget/{}-{}-{}.props'.format(name, toolset, arch))
+
+print "//////", datetime.datetime.now() , "finished building"
