@@ -157,7 +157,7 @@ for arch in PLATFORMS:
 #	if 'CLANG_TOOLSET' in env:
 #		prefix = 'amd64' if arch == 'x64' else arch
 #		env['PATH'] = os.path.join(vs_install_dir, r'VC\ClangC2\bin', prefix, prefix) + ';' + env.get('PATH', '')
-
+	arch = arch.lower()
 	for conf in CONFIGURATIONS:
 		### Generate build.ninja files in out.gn/toolset/arch/conf directory
 		print "//////", datetime.datetime.now() , "building", arch, conf
