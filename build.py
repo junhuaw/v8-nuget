@@ -38,7 +38,7 @@ GN_OPTIONS = [
 	'treat_warnings_as_errors=false',
 	'use_jumbo_build=true',
 	'symbol_level=1',
-	'v8_enable_fast_mksnapshot=true',
+	#'v8_enable_fast_mksnapshot=true',
 	'v8_use_multi_snapshots=true',
 ]
 
