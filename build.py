@@ -27,6 +27,8 @@ CONFIGURATIONS = [CONFIGURATION] if CONFIGURATION else ['Debug', 'Release']
 
 XP_TOOLSET = (sys.argv[4] if len(sys.argv) > 4 else os.environ.get('XP')) == '1'
 
+FORCE_CLANG = os.environ.get('FORCE_CLANG') == '1'
+
 PACKAGES = ['v8', 'v8.redist', 'v8.symbols']
 
 BIN_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'bin')
@@ -38,7 +40,7 @@ GN_OPTIONS = [
 	'treat_warnings_as_errors=false',
 	'use_jumbo_build=true',
 	'symbol_level=1',
-	#'v8_enable_fast_mksnapshot=true',
+	'v8_enable_fast_mksnapshot=true',
 	'v8_use_multi_snapshots=true',
 ]
 
@@ -126,10 +128,11 @@ if XP_TOOLSET:
 	env['LIB'] = r'%ProgramFiles(x86)%\Microsoft SDKs\Windows\7.1A\Lib;' + env.get('LIB', '')
 	toolset += '_xp'
 
-if toolset.startswith('v141'):
+if toolset.startswith('v141') and not FORCE_CLANG:
 	is_clang = 'false'
 else:
 	is_clang = 'true'
+	toolset += '_clang'
 	subprocess.check_call([sys.executable, 'tools/clang/scripts/update.py'], cwd='v8', env=env)
 	del env['GYP_MSVS_VERSION']
 	del env['GYP_MSVS_OVERRIDE_PATH']
