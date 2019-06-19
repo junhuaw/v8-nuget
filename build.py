@@ -102,6 +102,7 @@ vs_versions = {
 	'12.0': { 'version': '2013', 'toolset': 'v120' },
 	'14.0': { 'version': '2015', 'toolset': 'v140' },
 	'15.0': { 'version': '2017', 'toolset': 'v141' },
+	'16.0': { 'version': '2019', 'toolset': 'v142' },
 }
 vs_version = vs_versions[os.environ.get('VisualStudioVersion', '14.0')]
 toolset = vs_version['toolset']
@@ -123,12 +124,14 @@ print '  set GYP_MSVS_OVERRIDE_PATH=', env['GYP_MSVS_OVERRIDE_PATH']
 print '------------------------------------------------------'
 
 if XP_TOOLSET:
+	if toolset.startswith('v142'):
+		raise RuntimeError("XP toolset is not supported")
 	env['INCLUDE'] = r'%ProgramFiles(x86)%\Microsoft SDKs\Windows\7.1A\Include;' + env.get('INCLUDE', '')
 	env['PATH'] = r'%ProgramFiles(x86)%\Microsoft SDKs\Windows\7.1A\Bin;' + env.get('PATH', '')
 	env['LIB'] = r'%ProgramFiles(x86)%\Microsoft SDKs\Windows\7.1A\Lib;' + env.get('LIB', '')
 	toolset += '_xp'
 
-if toolset.startswith('v141') and not FORCE_CLANG:
+if (toolset.startswith('v141') or toolset.startswith('v142')) and not FORCE_CLANG:
 	is_clang = 'false'
 else:
 	is_clang = 'true'
@@ -159,9 +162,9 @@ for arch in PLATFORMS:
 #		env['PATH'] = os.path.join(vs_install_dir, r'VC\ClangC2\bin', prefix, prefix) + ';' + env.get('PATH', '')
 	arch = arch.lower()
 	for conf in CONFIGURATIONS:
-		### Generate build.ninja files in out.gn/toolset/arch/conf directory
+		### Generate build.ninja files in out.gn/V8_VERSION/toolset/arch/conf directory
 		print "//////", datetime.datetime.now() , "building", arch, conf
-		out_dir = os.path.join(toolset, arch, conf, V8_VERSION)
+		out_dir = os.path.join(V8_VERSION, toolset, arch, conf)
 		builder = ('ia32' if arch == 'x86' else arch) + '.' + conf.lower()
 		subprocess.check_call([sys.executable, 'tools/dev/v8gen.py',
 			'-b', builder, out_dir, '-vv', '--', 'is_clang='+is_clang] + GN_OPTIONS, cwd='v8', env=env)
