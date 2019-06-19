@@ -49,9 +49,9 @@ def git_fetch(url, target):
 		#url = url['url']
 		#if url['condition'] == 'checkut_android':
 		return
-	parts = url.split('.git@')
+	parts = url.split('@')
 	if len(parts) > 1:
-		url = parts[0] + '.git'
+		url = parts[0]
 		ref = parts[1]
 	else:
 		ref = 'HEAD'
