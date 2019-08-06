@@ -42,6 +42,7 @@ GN_OPTIONS = [
 	'symbol_level=1',
 	'v8_enable_fast_mksnapshot=true',
 	'v8_use_multi_snapshots=true',
+	"use_custom_libcxx=false",
 ]
 
 def git_fetch(url, target):
