@@ -10,7 +10,6 @@ import shutil
 import datetime
 
 V8_URL = 'https://chromium.googlesource.com/v8/v8.git'
-# V8_URL = 'https://github.com/junhuaw/v8.git'
 V8_VERSION = sys.argv[1] if len(sys.argv) > 1 else os.environ.get('V8_VERSION', '')
 
 # Use only Last Known Good Revision branches
@@ -80,9 +79,9 @@ def copytree(src_dir, dest_dir):
 		shutil.copy(path, dest_dir)
 
 def patchsource(dir):
-	# 'git fetch https://github.com/junhuaw/v8.git 6d477df00f468dc0f73cc935f6be7be28830e764'
-	subprocess.check_call(['git', 'fetch', 'https://github.com/junhuaw/v8.git', '6d477df00f468dc0f73cc935f6be7be28830e764'], cwd=dir)
-	# 'git cherry-pick 6d477df00f'
+	# git fetch --depth=2 https://github.com/junhuaw/v8.git 7.7-lkgr
+	subprocess.check_call(['git', 'fetch', '--depth=2', 'https://github.com/junhuaw/v8.git', '7.7-lkgr'], cwd=dir)
+	# git cherry-pick 6d477df00f
 	subprocess.check_call(['git', 'cherry-pick', '6d477df00f'], cwd=dir)
 
 # __main__
