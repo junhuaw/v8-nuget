@@ -10,6 +10,7 @@ import shutil
 import datetime
 
 V8_URL = 'https://chromium.googlesource.com/v8/v8.git'
+# V8_URL = 'https://github.com/junhuaw/v8.git'
 V8_VERSION = sys.argv[1] if len(sys.argv) > 1 else os.environ.get('V8_VERSION', '')
 
 # Use only Last Known Good Revision branches
@@ -42,7 +43,7 @@ GN_OPTIONS = [
 	'symbol_level=1',
 	'v8_enable_fast_mksnapshot=true',
 	'v8_use_multi_snapshots=true',
-	"use_custom_libcxx=false",
+	# "use_custom_libcxx=false",
 ]
 
 def git_fetch(url, target):
@@ -78,6 +79,11 @@ def copytree(src_dir, dest_dir):
 	for path in glob.iglob(src_dir):
 		shutil.copy(path, dest_dir)
 
+def patchsource(dir):
+	# 'git fetch https://github.com/junhuaw/v8.git 6d477df00f468dc0f73cc935f6be7be28830e764'
+	subprocess.check_call(['git', 'fetch', 'https://github.com/junhuaw/v8.git', '6d477df00f468dc0f73cc935f6be7be28830e764'], cwd=dir)
+	# 'git cherry-pick 6d477df00f'
+	subprocess.check_call(['git', 'cherry-pick', '6d477df00f'], cwd=dir)
 
 # __main__
 
@@ -85,6 +91,9 @@ print "//////", datetime.datetime.now() , "started building"
 
 ## Fetch V8 sources
 git_fetch(V8_URL+'@'+V8_VERSION, 'v8')
+
+## Patch V8 sources code
+patchsource('v8')
 
 ## Fetch V8 source dependencies besides tests
 Var = lambda name: vars[name]
