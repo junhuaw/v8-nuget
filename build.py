@@ -9,7 +9,8 @@ import subprocess
 import shutil
 import datetime
 
-V8_URL = 'https://chromium.googlesource.com/v8/v8.git'
+# V8_URL = 'https://chromium.googlesource.com/v8/v8.git'
+V8_URL = 'https://www.github.com/v8/v8.git'
 V8_VERSION = sys.argv[1] if len(sys.argv) > 1 else os.environ.get('V8_VERSION', '')
 
 # Use only Last Known Good Revision branches

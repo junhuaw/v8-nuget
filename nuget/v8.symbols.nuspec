@@ -7,6 +7,7 @@
     <owners>The V8 NuGet package Authors</owners>
     <projectUrl>https://github.com/pmed/v8-nuget</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/wiki/v8/v8/images/v8logo.png</iconUrl>
+    <license type="file">LICENSE</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Debug symbols for V8 JavaScript Engine redistrubutable files.</description>
     <tags>V8 javascript embedded native nativepackage</tags>
@@ -20,7 +21,7 @@
     <file src="..\v8\out.gn\$BuildVersion$\$PlatformToolset$\$Platform$\Release\icu*.pdb" target="lib\Retail" />
     <file src="..\v8\out.gn\$BuildVersion$\$PlatformToolset$\$Platform$\Release\v8*.pdb" target="lib\Retail" />
     <file src="v8.symbols-$PlatformToolset$-$Platform$.props" target="build\native" />
-    <file src="..\v8\LICENSE.v8" target="" />
+    <file src="..\v8\LICENSE" target="LICENSE" />
     <file src="..\readme.md" target="" />
   </files>
 </package>
