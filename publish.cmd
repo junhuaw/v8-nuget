@@ -1,1 +1,1 @@
-nuget push *.nupkg %NUGET_API_KEY% -Source https://nuget.org/
+nuget push *%1*.nupkg %NUGET_API_KEY% -Source https://nuget.org/
